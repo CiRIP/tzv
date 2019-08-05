@@ -3,10 +3,17 @@
   "version": "1.0.0",
   "description": "țv - ține versiuni",
   "main": "index.js",
+  "bin": "bin/țv",
   "author": "Ciprian Ionescu <me@ciprian-ionescu.com>",
   "license": "șaormaware",
   "dependencies": {
+    "diff": "^4.0.1",
+    "hasha": "^5.0.0",
     "pouchdb-node": "^7.1.1",
     "yargs": "^13.3.0"
+  },
+  "resolutions": {
+    "leveldown": "5.0.2",
+    "levelup": "4.0.2"
   }
 }
