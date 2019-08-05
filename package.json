@@ -1,0 +1,11 @@
+{
+  "name": "tv",
+  "version": "1.0.0",
+  "description": "țv - ține versiuni",
+  "main": "index.js",
+  "author": "Ciprian Ionescu <me@ciprian-ionescu.com>",
+  "license": "șaormaware",
+  "dependencies": {
+    "yargs": "^13.3.0"
+  }
+}
