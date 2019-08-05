@@ -2,7 +2,7 @@ const fs = require('fs');
 const PouchDB = require('pouchdb-node');
 const hasha = require('hasha');
 
-exports.command = ['bagă <fișiere...>', 'baga'];
+exports.command = ['bagă <fișiere...>', 'baga', 'b', 'add'];
 exports.desc = 'Bagă pergamente în pivniță';
 
 exports.handler = async function (argv) {
@@ -27,7 +27,7 @@ exports.handler = async function (argv) {
 			hash,
 			mtime: mtime.toISOString()
 		})
-			.then(() => console.info(`bagă ${i} - ${mtime.toISOString()}/${hash}`))
+			.then(() => console.info('bagă'.green, i, mtime.toISOString().gray, '/', hash.gray))
 			.catch(() => { });
 	}
 }

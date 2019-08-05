@@ -1,7 +1,7 @@
 const PouchDB = require('pouchdb-node');
 const fs = require('fs');
 
-exports.command = 'inițializează';
+exports.command = ['inițializează', 'initializeaza', 'i', 'iniț', 'init'];
 exports.desc = 'Inițializează o pivniță';
 
 exports.handler = async function (argv) {
