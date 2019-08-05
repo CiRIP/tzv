@@ -6,6 +6,7 @@
   "author": "Ciprian Ionescu <me@ciprian-ionescu.com>",
   "license": "șaormaware",
   "dependencies": {
+    "pouchdb-node": "^7.1.1",
     "yargs": "^13.3.0"
   }
 }
