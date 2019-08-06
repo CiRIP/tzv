@@ -5,7 +5,7 @@ const diff = require('diff');
 const baseDir = require('../index');
 
 exports.command = ['consemnează <mesaj>', 'consemneaza', 'c', 'commit'];
-exports.desc = 'Consemnează un set de schimbări la pergamente în pivnița';
+exports.desc = 'Consemnează un set de schimbări la pergamente în pivniță';
 
 exports.handler = async function (argv) {
 	if (!baseDir) {

@@ -10,7 +10,7 @@ module.exports = {
 		for (i of currentDir) {
 			const child = path + '/' + i;
 			if (fs.statSync(child).isDirectory()) list = this.getRoot(child, list);
-			else list.push(child);
+			else list.push(child.slice(2));
 		}
 
 		return list;

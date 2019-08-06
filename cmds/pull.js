@@ -4,8 +4,8 @@ const hasha = require('hasha');
 const diff = require('diff');
 const baseDir = require('../index');
 
-exports.command = ['urcă <catacombă>', 'urca', 'u', 'push'];
-exports.desc = 'Urcă conținutul pivniței într-o catacombă centrală';
+exports.command = ['coboară <catacombă>', 'coboara', 'pull', 'clone'];
+exports.desc = 'Coboară conținutul pivniței dintr-o catacombă centrală';
 
 exports.handler = async function (argv) {
 	if (!baseDir) {
@@ -15,5 +15,5 @@ exports.handler = async function (argv) {
 
 	const cellar = new PouchDB(baseDir + '/cellar');
 
-	await cellar.replicate.to(argv.catacombă);
+	await cellar.replicate.from(argv.catacombă);
 }

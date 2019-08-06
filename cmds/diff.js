@@ -5,7 +5,7 @@ const diff = require('diff');
 const baseDir = require('../index');
 
 exports.command = ['compară <consemnare1> <consemnare2>', 'compara', 'comp', 'diff'];
-exports.desc = 'Compară două consemnări la pergamente în pivnița';
+exports.desc = 'Compară două consemnări la pergamente în pivniță';
 
 exports.handler = async function (argv) {
 	if (!baseDir) {

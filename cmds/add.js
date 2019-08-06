@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const PouchDB = require('pouchdb-node');
 const hasha = require('hasha');
 const baseDir = require('../index');
+const Utils = require('../utils');
 
 exports.command = ['bagă <fișiere...>', 'baga', 'b', 'add'];
 exports.desc = 'Bagă pergamente în pivniță';
@@ -15,7 +16,10 @@ exports.handler = async function (argv) {
 	const index = new PouchDB(baseDir + '/index');
 	const cellar = new PouchDB(baseDir + '/cellar');
 
-	for (i of argv.fișiere) {
+	let files = argv.fișiere;
+	if (argv.fișiere[0] === '.') files = Utils.getRoot('.');
+
+	for (i of files) {
 		if (!fs.existsSync(i)) {
 			console.error(`Fișierul ${i} nu există în directorul curent`);
 			return 1;
@@ -51,7 +55,6 @@ exports.handler = async function (argv) {
 
 			info = info.cyan;
 		}
-		console.log(file)
 
 		await index.put(file)
 			.then(() => console.info(info, i, mtime.toISOString().gray, '/', hash.gray))
