@@ -20,5 +20,14 @@ exports.handler = async function (argv) {
 		name: 'Test Name',
 		email: 'test@example.com'
 	});
+	await index.put({
+		_id: 'context',
+		commit: '0000000000000000000000000000000000000000'
+	});
+	await cellar.put({
+		_id: '0000000000000000000000000000000000000000',
+		type: 'commit',
+		root: {}
+	})
 	console.info('Am inițializat o noua pivniță în directorul actual');
 }
