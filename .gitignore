@@ -89,3 +89,7 @@ typings/
 
 # Development sandbox
 sandbox-*/
+
+# țv
+.țv
+.git
