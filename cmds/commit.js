@@ -3,7 +3,7 @@ const fs = require('fs');
 const hasha = require('hasha');
 const diff = require('diff');
 
-exports.command = ['consemnează', 'consemneaza', 'c', 'commit'];
+exports.command = ['consemnează <mesaj>', 'consemneaza', 'c', 'commit'];
 exports.desc = 'Consemnează un set de schimbări la pergamente în pivnița';
 
 exports.handler = async function (argv) {
@@ -26,6 +26,11 @@ exports.handler = async function (argv) {
 		if (!doc.commited) staged.push(doc);
 	}
 
+	if (!staged) {
+		console.error('Nu există modificări pregătite pentru consemnare');
+		return 1;
+	}
+
 	const context = await index.get('context');
 	const previous = await cellar.get(context.commit);
 	const root = previous.root;
@@ -34,6 +39,10 @@ exports.handler = async function (argv) {
 	for (i of staged) {
 		root[i._id] = i.hash;
 		commit += i.hash;
+		await index.put({
+			...i,
+			commited: true
+		});
 	}
 
 	commit = hasha(commit, { algorithm: 'sha1' })
@@ -43,7 +52,9 @@ exports.handler = async function (argv) {
 		root,
 		parent: context.commit,
 		author: config.name,
-		email: config.email
+		email: config.email,
+		message: argv.mesaj,
+		date: new Date().toDateString
 	});
 
 	await index.put({

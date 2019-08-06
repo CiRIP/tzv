@@ -19,7 +19,10 @@ exports.handler = async function (argv) {
 	let commit = await cellar.get(context.commit);
 
 	while (commit._id != '0000000000000000000000000000000000000000') {
-		console.log(commit._id);
+		console.log(commit._id.cyan);
+		console.log('Autor: '.gray, commit.author, `<${commit.email}>`);
+		console.log('Dată:  '.gray, commit.date);
+		console.log('\n\t', commit.message, '\n');
 		commit = await cellar.get(commit.parent);
 	}
 

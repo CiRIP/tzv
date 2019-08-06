@@ -39,5 +39,7 @@ exports.handler = async function (argv) {
 
 	for (i of modified) console.info('\t' + i._id.red);
 
+	console.info('\n');
+
 	return modified;
 }
