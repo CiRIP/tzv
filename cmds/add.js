@@ -3,6 +3,7 @@ const PouchDB = require('pouchdb-node');
 const hasha = require('hasha');
 const baseDir = require('../index');
 const Utils = require('../utils');
+const parser = require('gitignore-parser')
 
 exports.command = ['bagă <fișiere...>', 'baga', 'b', 'add'];
 exports.desc = 'Bagă pergamente în pivniță';
@@ -17,7 +18,11 @@ exports.handler = async function (argv) {
 	const cellar = new PouchDB(baseDir + '/cellar');
 
 	let files = argv.fișiere;
-	if (argv.fișiere[0] === '.') files = Utils.getRoot('.');
+	if (argv.fișiere[0] === '.') {
+		const gitignore = parser.compile(fs.readFileSync('.gitignore', 'utf8'));
+		files = Utils.getRoot('.');
+		files = files.filter(gitignore.accepts);
+	}
 
 	for (i of files) {
 		if (!fs.existsSync(i)) {
