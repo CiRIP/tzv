@@ -1,11 +1,12 @@
 const PouchDB = require('pouchdb-node');
-const fs = require('fs');
+const fs = require('fs-extra');
+const baseDir = require('../index');
 
 exports.command = ['inițializează', 'initializeaza', 'i', 'iniț', 'init'];
 exports.desc = 'Inițializează o pivniță';
 
 exports.handler = async function (argv) {
-	if (fs.existsSync('.țv/')) {
+	if (baseDir) {
 		console.error('Pivnița deja există');
 		return 1;
 	}

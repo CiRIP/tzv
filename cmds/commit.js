@@ -1,19 +1,20 @@
 const PouchDB = require('pouchdb-node');
-const fs = require('fs');
+const fs = require('fs-extra');
 const hasha = require('hasha');
 const diff = require('diff');
+const baseDir = require('../index');
 
 exports.command = ['consemnează <mesaj>', 'consemneaza', 'c', 'commit'];
 exports.desc = 'Consemnează un set de schimbări la pergamente în pivnița';
 
 exports.handler = async function (argv) {
-	if (!fs.existsSync('.țv/')) {
+	if (!baseDir) {
 		console.error('Nu există pivniță aici');
 		return 1;
 	}
 
-	const index = new PouchDB('.țv/index');
-	const cellar = new PouchDB('.țv/cellar');
+	const index = new PouchDB(baseDir + '/index');
+	const cellar = new PouchDB(baseDir + '/cellar');
 	const list = await index.allDocs({ include_docs: true, descending: true });
 	const config = await index.get('config');
 
@@ -37,7 +38,7 @@ exports.handler = async function (argv) {
 	let commit = '';
 
 	for (i of staged) {
-		root[i._id] = i.hash;
+		root[i.path] = i.hash;
 		commit += i.hash;
 		await index.put({
 			...i,

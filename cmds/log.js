@@ -1,19 +1,20 @@
 const PouchDB = require('pouchdb-node');
-const fs = require('fs');
+const fs = require('fs-extra');
 const hasha = require('hasha');
 const diff = require('diff');
+const baseDir = require('../index');
 
 exports.command = ['arhivă', 'arhiva', 'a', 'log'];
 exports.desc = 'Recuperează toată lista de consemnări';
 
 exports.handler = async function (argv) {
-	if (!fs.existsSync('.țv/')) {
+	if (!baseDir) {
 		console.error('Nu există pivniță aici');
 		return 1;
 	}
 
-	const index = new PouchDB('.țv/index');
-	const cellar = new PouchDB('.țv/cellar');
+	const index = new PouchDB(baseDir + '/index');
+	const cellar = new PouchDB(baseDir + '/cellar');
 
 	const context = await index.get('context');
 	let commit = await cellar.get(context.commit);

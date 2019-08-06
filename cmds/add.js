@@ -1,18 +1,19 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const PouchDB = require('pouchdb-node');
 const hasha = require('hasha');
+const baseDir = require('../index');
 
 exports.command = ['bagă <fișiere...>', 'baga', 'b', 'add'];
 exports.desc = 'Bagă pergamente în pivniță';
 
 exports.handler = async function (argv) {
-	if (!fs.existsSync('.țv/')) {
+	if (!baseDir) {
 		console.error('Nu există pivniță aici');
 		return 1;
 	}
 
-	const index = new PouchDB('.țv/index');
-	const cellar = new PouchDB('.țv/cellar');
+	const index = new PouchDB(baseDir + '/index');
+	const cellar = new PouchDB(baseDir + '/cellar');
 
 	for (i of argv.fișiere) {
 		if (!fs.existsSync(i)) {
@@ -27,16 +28,22 @@ exports.handler = async function (argv) {
 		let file = await index.get(i).catch(() => { });
 		let info = 'cataloghează\t';
 
-		if (file && !file.commited) {
-			const blob = await cellar.get(file.hash).then(cellar.remove);
+		if (file) {
+			if (file.hash === hash) {
+				console.error(`Fișierul ${i} este deja consemnat`);
+				return 1;
+			}
+			if (!file.commited) cellar.get(file.hash).then(cellar.remove);
 
 			file.hash = hash;
 			file.mtime = mtime.toISOString;
+			file.commited = false;
 
 			info = info.gray;
 		} else {
 			file = {
 				_id: i,
+				path: i,
 				hash,
 				commited: false,
 				mtime: mtime.toISOString()
@@ -44,6 +51,7 @@ exports.handler = async function (argv) {
 
 			info = info.cyan;
 		}
+		console.log(file)
 
 		await index.put(file)
 			.then(() => console.info(info, i, mtime.toISOString().gray, '/', hash.gray))

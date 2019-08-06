@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 
 module.exports = {
 	getRoot(path, list) {
@@ -14,5 +14,20 @@ module.exports = {
 		}
 
 		return list;
+	},
+	async populateRoot(cellar, commit, previousCommit) {
+		const workingContext = await cellar.get(commit);
+		const previousContext = await cellar.get(previousCommit);
+
+		for (file in previousContext) {
+			fs.removeSync(file);
+		}
+
+		for (file in workingContext.root) {
+			console.info('comută\t\t'.green, file, workingContext.root[file].gray);
+			const blob = await cellar.get(workingContext.root[file]);
+			const content = new Buffer.from(blob.content);
+			fs.outputFileSync(file, content);
+		}
 	}
 }
